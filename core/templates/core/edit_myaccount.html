@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% block title %}Edit Account{% endblock title %}
+{% block content %}
+  <div class="max-w-6xl mx-auto py-2 px-6 xl:px-0">
+    <h1 class="mb-5 text-3xl">Edit Account</h1>
+
+    <div class="mb-6">
+      <strong>Name:</strong> {{ request.user.get_full_name }} <br>
+      <strong>Username:</strong> {{ request.user.username }} <br>
+      <strong>Email: </strong> {{ request.user.email }} <br>
+
+      <form action="." method="post" class="space-y-3">
+        {% csrf_token %}
+        <div>
+          <label for="">First name</label>
+          <input type="text" name="first_name" value="{{ request.user.first_name }}" class="w-full mt-2 py-2 px-3 bg-gray-100 rounded-lg">
+        </div>
+        <div>
+          <label for="">Last name</label>
+          <input type="text" name="last_name" value="{{ request.user.last_name }}" class="w-full mt-2 py-2 px-3 bg-gray-100 rounded-lg">
+        </div>
+        <div>
+          <label for="">Username</label>
+          <input type="text" name="username" value="{{ request.user.username }}" class="w-full mt-2 py-2 px-3 bg-gray-100 rounded-lg">
+        </div>
+        <div>
+          <label for="">Email</label>
+          <input type="email" name="email" value="{{ request.user.email }}" class="w-full mt-2 py-2 px-3 bg-gray-100 rounded-lg">
+        </div>
+
+        <div>
+          <button class="py-4 px-6 rounded-lg text-white bg-purple-500">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <hr>
+
+    
+  </div>
+
+{% endblock content %}

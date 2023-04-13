@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+{% block title %}My Account{% endblock title %}
+{% block content %}
+  <div class="max-w-6xl mx-auto py-2 px-6 xl:px-0">
+    <h1 class="mb-5 text-3xl">My Account</h1>
+
+    <div class="mb-6">
+      <strong>Name:</strong> {{ request.user.get_full_name }} <br>
+      <strong>Username:</strong> {{ request.user.username }} <br>
+      <strong>Email: </strong> {{ request.user.email }} <br>
+      <a href="{% url 'edit_my-account' %}" class="inline-block mt-4 py-4 px-6 rounded-lg text-white bg-purple-500">Edit my account</a>
+    </div>
+
+    <hr>
+
+    <h2 class="my-6 text-xl">My Orders</h2>
+    {% for order in request.user.orders.all %}
+    <div class="w-full mb-6 p-6 bg-gray-100 rounded-xl">
+      <div class="mb-6 flex justify-between">
+        <a href="#">Order #: <strong>{{ order.id }}</strong></a>
+      </div>
+      <div class="mb-6 w-full">
+        {% for item in order.items.all %}
+        <div class="product mb-6 flex pr-6">
+          <a href="{% url 'product' item.product.slug %}" class="w-1/4">
+            <img src="{{ item.product.get_thumbnail }}" alt="" class="hover:shadow-lg rounded-xl">
+          </a>
+          <div class="w-3/4 pl-6">
+            <div class="flex justify-between">
+              <a href="{% url 'product' item.product.slug %}" class="text-lg font-medium">{{ item.product.name }}</a>
+              <p class="mb-6 pt-1 text-gray-600">$ {{ item.display_price | floatformat:2 | intcomma }}</p>
+            </div>
+            <hr>
+            <div class="mt-6">
+              Quantity: {{ item.quantity }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <p>Date: {{ order.created_at | date:'m/d/Y H:i:s' }}</p>
+        <p>Total: <strong>$ {{ order.get_total_amount | floatformat:2 | intcomma }}</strong>  in {{ order.items.all|length }} item{{ order.items.all|pluralize }} </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{% endblock content %}

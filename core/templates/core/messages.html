@@ -1,0 +1,13 @@
+{% if messages %}
+  {% for message in messages %}
+    
+    <div x-data="{ show: true }" {% if message.tags == 'green' or message.tags == 'blue' %}x-init="setTimeout(()=> {show=false},4000)"{% endif %}>
+      <div class="w-3/5 mx-auto my-2 relative bg-{{message.tags}}-100 border-l-4 border-{{message.tags}}-500 text-{{message.tags}}-700 p-2" role="alert" x-show="show" x-transition.duration.300ms>
+        <span class="absolute top-0 right-0 px-1 py-1" @click="show=false">
+          <svg class="fill-current h-6 w-6 text-{{message.tags}}-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+        </span>
+        {{ message|safe }}
+      </div>
+    </di >
+  {% endfor %}
+{% endif %}
