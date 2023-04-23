@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
+from django.db.models import Avg
+from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import intcomma
 from PIL import Image
 from io import BytesIO
@@ -61,3 +63,17 @@ class Product(models.Model):
     thumbnail = File(thumb_io, name=image.name.split('/')[-1])
 
     return thumbnail
+  
+  def get_rating(self):
+
+    return round(self.reviews.aggregate(prom=Avg('rating'))['prom'] or 0 , 1)
+  
+class Review(models.Model):
+  product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+  rating = models.IntegerField(default=3)
+  content = models.TextField()
+  created_by = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self):
+    return f'Review of {self.created_by.username} on {self.product.name}'

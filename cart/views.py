@@ -11,7 +11,7 @@ def add_to_cart(request, product_id):
   cart = Cart(request)
   cart.add(product_id)
 
-  return render(request, 'cart/menu_cart.html', {})
+  return render(request, 'cart/partials/menu_cart.html', {})
 
 def cart(request):
   print(Cart(request))
@@ -64,7 +64,7 @@ def empty_cart(request):
   return HttpResponse('Cart is now emptied')
 
 def hx_menu_cart(request):
-  return render(request, 'cart/menu_cart.html')
+  return render(request, 'cart/partials/menu_cart.html')
 
 def hx_cart_total(request):
   return render(request, 'cart/partials/cart_total.html', {})
